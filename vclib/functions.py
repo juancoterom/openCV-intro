@@ -41,3 +41,17 @@ def thresh(img: List[List[int]]) -> List[List[int]]:
     return [[evaluate(pixel) for pixel in row] for row in img]
 
 
+def similarity(
+    imgCrop: List[List[int]], angle: int, tx: int, ty: int, scale: float=1
+    ) -> List[List[int]]:
+    """Applies rotation, scaling and translation to an image."""
+
+    height, width = imgCrop.shape[:2]
+    center = width/2, height/2
+    matrixRot = cv2.getRotationMatrix2D(center, angle, scale)
+    imgRot = cv2.warpAffine(imgCrop, matrixRot, (width, height))
+    matrixTrans = np.float32([[1, 0, tx], [0, 1, ty]])
+    imgSim = cv2.warpAffine(imgRot, matrixTrans, (width, height))
+    return imgSim
+
+
