@@ -1,4 +1,5 @@
 import cv2
+import cv2.aruco as aruco
 import numpy as np
 import random
 
@@ -75,3 +76,50 @@ def rectify(
     matrixPersp = cv2.getPerspectiveTransform(src, des)
     imgOut = cv2.warpPerspective(img, matrixPersp, (height, width))
     return imgOut
+
+
+def findMarker(
+        img: List[List[int]], markerSize: int=4, 
+        totalMarkers: int=250, draw: bool=True
+        ) -> List[int]:
+    """Finds Aruco marker, given an image."""
+
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    key = getattr(aruco, f'DICT_{markerSize}X{markerSize}_{totalMarkers}')
+    arucoDict = aruco.Dictionary_get(key)
+    arucoParameters = aruco.DetectorParameters_create()
+    bb, ids, rejected = aruco.detectMarkers(
+            img, arucoDict, parameters=arucoParameters
+            )
+
+    if draw:
+        aruco.drawDetectedMarkers(img, bb)
+    return [bb, ids]
+
+
+def replace(
+        bb: int, ids: int,
+        img: List[List[int]], imgR: List[List[int]], drawId: bool=True
+        ) -> List[List[int]]:
+    """Applies perspective transformation and replaces onto Aruco."""
+    
+    COLOR_BLACK = 0, 0, 0
+
+    # Find corners in Aruco and given image.
+    ul = bb[0][0][0], bb[0][0][1]
+    ur = bb[0][1][0], bb[0][1][1]
+    dr = bb[0][2][0], bb[0][2][1]
+    dl = bb[0][3][0], bb[0][3][1]
+
+    height, width = imgR.shape[:2]
+    point1 = np.array([ul, ur, dr, dl])
+    point2 = np.float32([[0, 0], [width, 0], [width, height], [0, height]])
+
+    # Apply transformation to image.
+    mtx, _ = cv2.findHomography(point2, point1)
+    imgOutput = cv2.warpPerspective(imgR, mtx, (img.shape[1], img.shape[0]))
+
+    # Add images together.
+    cv2.fillConvexPoly(img, point1.astype(int), COLOR_BLACK)
+    imgOutput += img
+    return imgOutput
