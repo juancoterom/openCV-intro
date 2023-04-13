@@ -19,29 +19,29 @@ def main() -> None:
     WINDOW = 'image' 
     
     # Read image.
-    g.init_crop(PATH)
+    g.initCrop(PATH)
     
     # Allow cropping.
     cv2.namedWindow(WINDOW)
     cv2.setMouseCallback(WINDOW, crop)
     
     while True:
-        imgcpy = g.img.copy()
+        imgCopy = g.img.copy()
         
         if not g.cropping:
             # Display original image.
             cv2.imshow(WINDOW, g.img)
         else:
             # Draw rectangle while cropping.
-            cv2.rectangle(imgcpy, (g.ix, g.iy), (g.ox, g.oy), COLOR_RED, 2)
-            cv2.imshow(WINDOW, imgcpy)
+            cv2.rectangle(imgCopy, (g.ix, g.iy), (g.ox, g.oy), COLOR_RED, 2)
+            cv2.imshow(WINDOW, imgCopy)
         
         # Wait for user instructions.
         k = cv2.waitKey(1) & 0xFF
 
         if k == ord('g'):
             # Save cropped image.
-            cv2.imwrite('fotos/cropeado.png', g.imgcr)
+            cv2.imwrite('fotos/cropeado.png', g.imgCrop)
         if k == ord('r'):
             # Restore original image.
             cv2.destroyWindow('cropped')
