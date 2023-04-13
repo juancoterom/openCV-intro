@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import random
 
+from typing import List
+
 
 def adivina(attempt: int) -> None:
     """Compares an input integer to a randomly generated value,
@@ -28,7 +30,7 @@ def adivina(attempt: int) -> None:
     print('No ha adivinado.')
 
 
-def thresh(img: list[list[int]]) -> list[list[int]]:
+def thresh(img: List[List[int]]) -> List[List[int]]:
     """Returns thresholded image, given an input image."""
 
     def evaluate(pixel: int) -> int:
@@ -37,3 +39,5 @@ def thresh(img: list[list[int]]) -> list[list[int]]:
         return 0 if pixel < 220 else 255
     
     return [[evaluate(pixel) for pixel in row] for row in img]
+
+

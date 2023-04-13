@@ -1,7 +1,6 @@
 # OTERO, Juan Cruz - 71459
 # TP01 - Funcion en Python
 
-
 import os, sys
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
