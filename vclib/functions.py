@@ -55,3 +55,23 @@ def similarity(
     return imgSim
 
 
+def affine(
+        img: List[List[int]], src: List[List[int]], des: List[List[int]]
+        ) -> List[List[int]]:
+    """Applies affine transformation to an image."""
+
+    height, width = img.shape[:2]
+    matrixAff = cv2.getAffineTransform(src, des)
+    imgOut = cv2.warpAffine(img, matrixAff, (height, width))
+    return imgOut
+
+
+def rectify(
+        img: List[List[int]], src: List[List[int]], des: List[List[int]]
+        ) -> List[List[int]]:
+    """Applies perspective transformation to an image."""
+
+    height, width = img.shape[:2]
+    matrixPersp = cv2.getPerspectiveTransform(src, des)
+    imgOut = cv2.warpPerspective(img, matrixPersp, (height, width))
+    return imgOut
