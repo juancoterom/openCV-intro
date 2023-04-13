@@ -26,3 +26,14 @@ def adivina(attempt: int) -> None:
             return
     
     print('No ha adivinado.')
+
+
+def thresh(img: list[list[int]]) -> list[list[int]]:
+    """Returns thresholded image, given an input image."""
+
+    def evaluate(pixel: int) -> int:
+        """Evaluates a single pixel as either black or white."""
+
+        return 0 if pixel < 220 else 255
+    
+    return [[evaluate(pixel) for pixel in row] for row in img]
