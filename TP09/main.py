@@ -33,11 +33,11 @@ def main() -> None:
     # Apply perspective transformation and save image.
     src = np.float32([[x1, y1], [x2, y2], [x3, y3], [x4, y4]])
     des = np.float32(
-            [[x1, y1], 
-             [x1+width, y1],
-             [x1, y1+height], 
-             [x1+width, y1+height]]
-            )
+        [[x1, y1], 
+        [x1+width, y1],
+        [x1, y1+height], 
+        [x1+width, y1+height]]
+    )
     g.imgRect = rectify(img, src, des)
     cv2.imwrite('fotos/foto_rect.jpg', g.imgRect)
     

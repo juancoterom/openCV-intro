@@ -50,9 +50,14 @@ def measure(event: int, x: int, y: int, flags: int, param: None) -> None:
         # Write text onto image.
         xy_text = int((g.ix+x)/2 + 10), int((g.iy+y)/2 - 10)
         cv2.putText(
-                g.imgRect, f'{meas:.2f} cm', xy_text,
-                cv2.FONT_HERSHEY_PLAIN, 1, COLOR_YELLOW, 1
-                )
+            g.imgRect, 
+            f'{meas:.2f} cm', 
+            xy_text,
+            cv2.FONT_HERSHEY_PLAIN, 
+            1, 
+            COLOR_YELLOW, 
+            1
+        )
     if event == cv2.EVENT_LBUTTONUP:
         # Finish measurement.
         g.imgRectMeas[:] = g.imgRect[:]

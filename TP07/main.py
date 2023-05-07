@@ -48,11 +48,11 @@ def main() -> None:
             # Create mask to position footprint.
             x, y = [x for x, _ in g.points], [y for _, y in g.points]
             mask = np.array(
-                    [[x[0], y[0]], 
-                     [x[2], y[2]], 
-                     [x[2]+x[1]-x[0], y[2]+y[1]-y[0]], 
-                     [x[1], y[1]]], np.int32
-                    )
+                [[x[0], y[0]], 
+                [x[2], y[2]], 
+                [x[2]+x[1]-x[0], y[2]+y[1]-y[0]], 
+                [x[1], y[1]]], np.int32
+            )
             cv2.fillPoly(g.img, [mask], COLOR_BLACK, cv2.LINE_AA)
             
             # Add images together and save.

@@ -47,8 +47,8 @@ def main() -> None:
         if k == ord('s'):
             # Ask for transformation parameters. 
             valid_tx, valid_ty, valid_angle, valid_scale = (
-                    False, False, False, False
-                    )
+                False, False, False, False
+            )
 
             while not valid_tx:
                 try:

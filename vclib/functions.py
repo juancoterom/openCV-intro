@@ -18,8 +18,10 @@ def adivina(attempt: int) -> None:
         valid_guess = False
         while not valid_guess:
             try:
-                guess = int(input(f'Intentos: {attempt - i}.'
-                + 'Adivine numero entre 0 y 100: '))
+                guess = int(input(
+                    f'Intentos: {attempt - i}.'
+                    + 'Adivine numero entre 0 y 100: '
+                ))
                 valid_guess = True
             except ValueError:
                 print('ERROR: Debe ingresar un entero.')
@@ -43,8 +45,12 @@ def thresh(img: List[List[int]]) -> List[List[int]]:
 
 
 def similarity(
-    imgCrop: List[List[int]], angle: int, tx: int, ty: int, scale: float=1
-    ) -> List[List[int]]:
+    imgCrop: List[List[int]], 
+    angle: int, 
+    tx: int, 
+    ty: int, 
+    scale: float = 1
+) -> List[List[int]]:
     """Applies rotation, scaling and translation to an image."""
 
     height, width = imgCrop.shape[:2]
@@ -53,35 +59,44 @@ def similarity(
     imgRot = cv2.warpAffine(imgCrop, matrixRot, (width, height))
     matrixTrans = np.float32([[1, 0, tx], [0, 1, ty]])
     imgSim = cv2.warpAffine(imgRot, matrixTrans, (width, height))
+    
     return imgSim
 
 
 def affine(
-        img: List[List[int]], src: List[List[int]], des: List[List[int]]
-        ) -> List[List[int]]:
+    img: List[List[int]], 
+    src: List[List[int]], 
+    des: List[List[int]]
+) -> List[List[int]]:
     """Applies affine transformation to an image."""
 
     height, width = img.shape[:2]
     matrixAff = cv2.getAffineTransform(src, des)
     imgOut = cv2.warpAffine(img, matrixAff, (height, width))
+
     return imgOut
 
 
 def rectify(
-        img: List[List[int]], src: List[List[int]], des: List[List[int]]
-        ) -> List[List[int]]:
+    img: List[List[int]], 
+    src: List[List[int]], 
+    des: List[List[int]]
+) -> List[List[int]]:
     """Applies perspective transformation to an image."""
 
     height, width = img.shape[:2]
     matrixPersp = cv2.getPerspectiveTransform(src, des)
     imgOut = cv2.warpPerspective(img, matrixPersp, (height, width))
+
     return imgOut
 
 
 def findMarker(
-        img: List[List[int]], markerSize: int=4, 
-        totalMarkers: int=250, draw: bool=True
-        ) -> List[int]:
+    img: List[List[int]], 
+    markerSize: int = 4, 
+    totalMarkers: int = 250, 
+    draw: bool = True
+) -> List[int]:
     """Finds Aruco marker, given an image."""
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -89,18 +104,22 @@ def findMarker(
     arucoDict = aruco.Dictionary_get(key)
     arucoParameters = aruco.DetectorParameters_create()
     bb, ids, rejected = aruco.detectMarkers(
-            img, arucoDict, parameters=arucoParameters
-            )
+        img, arucoDict, parameters=arucoParameters
+    )
 
     if draw:
         aruco.drawDetectedMarkers(img, bb)
+
     return [bb, ids]
 
 
 def replace(
-        bb: int, ids: int,
-        img: List[List[int]], imgR: List[List[int]], drawId: bool=True
-        ) -> List[List[int]]:
+    bb: int, 
+    ids: int,
+    img: List[List[int]], 
+    imgR: List[List[int]], 
+    drawId: bool = True
+) -> List[List[int]]:
     """Applies perspective transformation and replaces onto Aruco."""
     
     COLOR_BLACK = 0, 0, 0
@@ -122,4 +141,5 @@ def replace(
     # Add images together.
     cv2.fillConvexPoly(img, point1.astype(int), COLOR_BLACK)
     imgOutput += img
+
     return imgOutput

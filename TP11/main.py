@@ -51,11 +51,11 @@ def main() -> None:
     if len(good) > MIN_MATCH_COUNT:
         # Compute homography with RANSAC.
         scrPts = np.float32(
-                [kp1[m.queryIdx].pt for m in good]
-                ).reshape(-1, 1, 2)
+            [kp1[m.queryIdx].pt for m in good]
+        ).reshape(-1, 1, 2)
         dstPts = np.float32(
-                [kp2[m.trainIdx].pt for m in good]
-                ).reshape(-1, 1, 2)
+            [kp2[m.trainIdx].pt for m in good]
+        ).reshape(-1, 1, 2)
         H, mask = cv2.findHomography(dstPts, scrPts, cv2.RANSAC, 5.0)
         
     # Apply perspective transformation H to img2.
